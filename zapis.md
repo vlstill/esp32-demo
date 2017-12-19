@@ -17,3 +17,5 @@ vim: spelllang=cs
 
 - tlačítko - spíná opakovaně, lze řešit kondendzátorem paralelně k tlačítku:
   4-50 nF
+
+- ovládání jasu: PWM driver

@@ -23,6 +23,11 @@ struct Pin {
 std::array< Pin, 5 > pins = { 32, 33, 25, 26, 27 };
 std::array< Pin, 2 > ins = { 34, 35 };
 
+void set( bool v ) {
+    for ( auto p : pins )
+        p.set( v );
+}
+
 void setup() {
     std::cout << "init\n";
     for ( auto p : pins )
@@ -32,6 +37,26 @@ void setup() {
 }
 
 void loop() {
+    int top = 1000;
+    while ( true ) {
+        int v = 0;
+        while ( v <= top ) {
+            ++v;
+            for ( int i = 0; i < top; ++i ) {
+                set( i < v );
+                delayMicroseconds( 1 );
+            }
+        }
+        while ( v >= 0 ) {
+            for ( int i = 0; i < top; ++i ) {
+                set( i < v );
+                delayMicroseconds( 1 );
+            }
+            --v;
+        }
+    }
+
+
     for ( unsigned i = 0; ; i++ ) {
         std::cout << "loop " << i << std::endl;
         for ( int j = 0; j < pins.size(); ++j ) {
