@@ -14,3 +14,6 @@ vim: spelllang=cs
   - <= 0.6V -> 0
   * >= 2.7V -> 1
   - mezi tím nedefinované
+
+- tlačítko - spíná opakovaně, lze řešit kondendzátorem paralelně k tlačítku:
+  4-50 nF
