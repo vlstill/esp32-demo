@@ -16,6 +16,8 @@ struct Pin {
 
     bool get() { return digitalRead( id ); }
 
+    int pin() { return id; }
+
   private:
     int id = 0;
 };
@@ -34,9 +36,44 @@ void setup() {
         p.set_output();
     for ( auto p : ins )
         p.set_input_pulldown();
+
+    ledcSetup( 0, 20000 /* 20 kHz */, 16 /* 2^16 steps */ );
+    for ( auto p : pins )
+    ledcAttachPin( p.pin(), 0 );
+    ledcWrite( 0, 65536 / 2 ); /* 50 % */
 }
 
 void loop() {
+    const int ANALOG_IN = 36;
+    const int ANALOG_MAX = 4096;
+
+#if 0
+    while ( true ) {
+        int v = analogRead( ANALOG_IN ) * 256 / ANALOG_MAX;
+        ledcWrite( 0, v * v );
+        std::cout << v << std::endl;
+    }
+#endif
+
+    int top = 256;
+    while ( true ) {
+        int d = (analogRead( ANALOG_IN ) * 10000 / ANALOG_MAX) + 1;
+        std::cout << d << std::endl;
+        int v = 0;
+        while ( v <= top ) {
+            int d = (analogRead( ANALOG_IN ) * 10000 / ANALOG_MAX) + 1;
+            ++v;
+            ledcWrite( 0, v * v );
+            delayMicroseconds( d );
+        }
+        while ( v >= 0 ) {
+            int d = (analogRead( ANALOG_IN ) * 10000 / ANALOG_MAX) + 1;
+            ledcWrite( 0, v * v );
+            delayMicroseconds( d );
+            --v;
+        }
+    }
+#if 0
     int top = 1000;
     while ( true ) {
         int v = 0;
@@ -55,8 +92,9 @@ void loop() {
             --v;
         }
     }
+#endif
 
-
+#if 0
     for ( unsigned i = 0; ; i++ ) {
         std::cout << "loop " << i << std::endl;
         for ( int j = 0; j < pins.size(); ++j ) {
@@ -77,4 +115,5 @@ void loop() {
             i = -1;
         }
     }
+#endif
 }

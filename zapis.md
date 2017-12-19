@@ -19,3 +19,5 @@ vim: spelllang=cs
   4-50 nF
 
 - ovládání jasu: PWM driver
+
+- ADC - analog input (default pin mode)
